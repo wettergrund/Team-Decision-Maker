@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Team_Decision_Maker.Models
 {
@@ -12,7 +13,8 @@ namespace Team_Decision_Maker.Models
         public BoardModel Id { get; set; }
 
 
-
+        [ForeignKey("BoardModelId")]
+        public BoardModel BoardModel { get; set; } // Navigation property
 
     }
 }
