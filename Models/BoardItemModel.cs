@@ -14,6 +14,7 @@ namespace Team_Decision_Maker.Models
 
 
         [ForeignKey("BoardModelId")]
+        [NotMapped]
         public BoardModel BoardModel { get; set; } // Navigation property
 
     }

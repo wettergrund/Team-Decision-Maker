@@ -34,17 +34,37 @@ namespace Team_Decision_Maker
 
             app.MapGet("API/users/all", () =>
             {
-                DMDbContext cnn = new DMDbContext();
+                using (var dbContext = new DMDbContext())
+                {
+                    var users = dbContext.Users.ToList();
+                    return Results.Json(users);
+                }
 
-                var users = cnn.Users.ToList();
+            });
 
-                return Results.Json(users);
+            app.MapGet("API/board={id}", (int boardId) =>
+            {
+                using (var dbContext = new DMDbContext())
+                {
+                    var board = dbContext.Boards.FirstOrDefault(id => id.Boar_Id == boardId);
+                    var items = dbContext.Items.Where(args => args.BoardModelId == boardId).ToList();
+
+                    var response = new
+                    {
+                        Board = board,
+                        Items = items
+                    };
+                    
+                    return Results.Json(response);
+                }
+
+               
 
             });
 
 
 
-                app.Run();
+            app.Run();
         }
     }
 }
