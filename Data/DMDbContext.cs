@@ -15,6 +15,8 @@ namespace Team_Decision_Maker.Data
         public DbSet<BoardModel> Boards { get; set; }
         public DbSet<BoardItemModel> Items { get; set; }
 
+        public DbSet<UserBoardModel> UserBoardLink { get; set; }
+
 
 
     }

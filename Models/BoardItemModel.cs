@@ -10,7 +10,7 @@ namespace Team_Decision_Maker.Models
         public int Weight { get; set; }
         public int Score { get; set; }
 
-        public BoardModel Id { get; set; }
+        public int BoardModelId { get; set; }
 
 
         [ForeignKey("BoardModelId")]
