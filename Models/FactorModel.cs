@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Team_Decision_Maker.Models
 {
-    public class BoardItemModel
+    public class FactorModel
     {
-        [Key] public int Item_Id { get; set; }
-        public string Title { get; set; }
-        public int BoardModelId { get; set; }
+        [Key]
+        public int FactorId { get; set; }
+        public string FactorName { get; set; }
+        public int Weight { get; set; }
 
         public int BoardId { get; set; }
-
 
         [ForeignKey("BoardId")]
         public BoardModel BoardModel { get; set; } // Navigation property

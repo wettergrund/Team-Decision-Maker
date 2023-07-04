@@ -79,12 +79,31 @@ namespace Team_Decision_Maker
                 return Results.Json(newBoard);
 
 
+            });
+
+            // Add item to board
+
+            app.MapPost("API/item/new", (string itemTitle, int Weight, int BoardID) =>
+            {
+                BoardItemModel newItem = new BoardItemModel
+                {
+                    Title = itemTitle,
+                    BoardModelId = BoardID
+                };
+
+
+
+                using (var dbContext = new DMDbContext())
+                {
+                    dbContext.Items.Add(newItem);
+                    dbContext.SaveChanges();
+                }
+
+                return Results.Json(newItem);
 
 
             });
 
-            // Add item to board
-           
 
 
             app.Run();
