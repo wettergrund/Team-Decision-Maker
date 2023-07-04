@@ -1,4 +1,5 @@
 using Team_Decision_Maker.Data;
+using Team_Decision_Maker.Models;
 
 namespace Team_Decision_Maker
 {
@@ -57,11 +58,33 @@ namespace Team_Decision_Maker
                     
                     return Results.Json(response);
                 }
-
                
+            });
+
+
+            // Add board
+            app.MapPost("API/board/new", (string Title, string Description) =>
+            {
+                BoardModel newBoard = new BoardModel();
+
+                newBoard.Title = Title;
+                newBoard.Description = Description;
+
+                using (var dbContext = new DMDbContext())
+                {
+                    dbContext.Boards.Add(newBoard);
+                    dbContext.SaveChanges();
+                }
+
+                return Results.Json(newBoard);
+
+
+
 
             });
 
+            // Add item to board
+           
 
 
             app.Run();
