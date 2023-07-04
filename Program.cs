@@ -43,16 +43,40 @@ namespace Team_Decision_Maker
 
             });
 
+            app.MapPost("API/users/new", (string mail, string firstName, string lastname) =>
+            {
+                UserModel newUser = new UserModel {
+                
+                    FirstName = firstName,
+                    LastName = lastname,
+                    Email = mail
+
+                };
+
+                using (var dbContext = new DMDbContext())
+                {
+                    dbContext.Users.Add(newUser);
+                    dbContext.SaveChanges();
+                }
+
+                return Results.Json(newUser);
+
+
+            });
+
             app.MapGet("API/board={id}", (int boardId) =>
             {
                 using (var dbContext = new DMDbContext())
                 {
                     var board = dbContext.Boards.FirstOrDefault(id => id.Boar_Id == boardId);
-                    var items = dbContext.Items.Where(args => args.BoardModelId == boardId).ToList();
+                    var items = dbContext.Items.Where(args => args.BoardId == boardId).ToList();
+                    var factors = dbContext.Factors.Where(args => args.BoardId == boardId).ToList();
+
 
                     var response = new
                     {
                         Board = board,
+                        factors = factors,
                         Items = items
                     };
                     
@@ -83,12 +107,12 @@ namespace Team_Decision_Maker
 
             // Add item to board
 
-            app.MapPost("API/item/new", (string itemTitle, int Weight, int BoardID) =>
+            app.MapPost("API/item/new", (string itemTitle, int BoardID) =>
             {
                 BoardItemModel newItem = new BoardItemModel
                 {
                     Title = itemTitle,
-                    BoardModelId = BoardID
+                    BoardId = BoardID
                 };
 
 
@@ -100,6 +124,31 @@ namespace Team_Decision_Maker
                 }
 
                 return Results.Json(newItem);
+
+
+            });
+
+            // Add a factor
+
+            app.MapPost("API/factor/new", (string factorTitle, int Weight, int BoardID) =>
+            {
+                FactorModel newFactor = new FactorModel
+                {
+                    FactorName = factorTitle,
+                    Weight = Weight,
+                    BoardId = BoardID
+                    
+                };
+
+
+
+                using (var dbContext = new DMDbContext())
+                {
+                    dbContext.Factors.Add(newFactor);
+                    dbContext.SaveChanges();
+                }
+
+                return Results.Json(newFactor);
 
 
             });
