@@ -3,7 +3,6 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import axios from 'axios'
 import './App.css'
-import Table from './Table'
 import NewTable from './NewTable'
 
 function App() {
@@ -17,15 +16,7 @@ function App() {
 
   return (
     <>
-      {/* {
-        users.map((user, index) => (
-          <p kewy={index}>{user.firstName}</p>
-
-        ))
-      } */}
-      {/* <Table></Table>
-       */}
-       <NewTable />
+       <NewTable board={1} />
     </>
   )
 }
