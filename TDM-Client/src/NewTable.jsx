@@ -19,17 +19,36 @@ const NewTable = () => {
   
       fetchData();
     }, []);
+    useEffect(() => {
+      
+        console.log(value);
+    }, [value]);
 
-    function handleChange(name, e){
-      console.log(name);
-      console.log(e);
+
+    function handleChange(inputfield, e){
+      console.log(inputfield)
+      console.log(e)
+      const factorId = e.target.attributes[2].nodeValue
+      const itemId = e.target.attributes[1].nodeValue
+      const weight = e.target.attributes[3].nodeValue
+      const inputValue = e.target.value;
+      
 
 
-      var change = {};
-      change[name] = e.target.value;
-      setValue(prev => [...prev, change]);
 
-      console.log(value)
+
+
+      const newValue = { ...value }; // Create a copy of the current state
+
+      if (!newValue[factorId]) {
+        newValue[factorId] = {}; // Create a new object for the factor ID if it doesn't exist
+      }
+    
+      newValue[factorId][itemId] = inputValue * weight; // Assign the new value to the corresponding factor and item IDs
+    
+      setValue(newValue); // Update the state with the new value
+    
+      
 
     }
 
@@ -66,7 +85,7 @@ const NewTable = () => {
                   <td>{item.title}</td>
                   {board.factors.map((factor) => (
                     <td key={factor.factorId}>
-                      <input type="text" item={item.item_Id} factor={factor.factorId} onChange={handleChange.bind(this, factor.factorId)} />
+                      <input type="text" item={item.item_Id} factor={factor.factorId} weight={factor.weight} onChange={handleChange.bind(this, factor.factorId)} />
                     </td>
                   ))}
                   <td key="score">
