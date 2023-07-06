@@ -46,6 +46,21 @@ const NewTable = () => {
     
       newValue[factorId][itemId] = inputValue * weight; // Assign the new value to the corresponding factor and item IDs
     
+        // Calculate totals
+        const totals = {};
+        for (const factor in newValue) {
+          if (factor !== "totals") {
+            for (const item in newValue[factor]) {
+              if (!totals[item]) {
+                totals[item] = 0; // Initialize total for the item ID if it doesn't exist
+              }
+              totals[item] += newValue[factor][item]; // Accumulate the values for the item ID
+            }
+          }
+        }
+      
+      newValue.totals = totals;
+      
       setValue(newValue); // Update the state with the new value
     
       
@@ -89,7 +104,9 @@ const NewTable = () => {
                     </td>
                   ))}
                   <td key="score">
-                      
+                      {
+                        value.totals && value.totals[item.item_Id]
+                      }
                   </td>
                 </tr>
               ))}
