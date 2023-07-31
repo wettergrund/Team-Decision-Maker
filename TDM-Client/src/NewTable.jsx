@@ -26,21 +26,19 @@ const NewTable = ({board}) => {
 
 
     function handleChange(inputfield, e) {
-      console.log(inputfield);
-      console.log(e);
       const factorId = e.target.attributes[2].nodeValue;
       const itemId = e.target.attributes[1].nodeValue;
       const weight = e.target.attributes[3].nodeValue;
       const inputValue = e.target.value;
-
+    
       const newValue = { ...value }; // Create a copy of the current state
-
+    
       if (!newValue[factorId]) {
         newValue[factorId] = {}; // Create a new object for the factor ID if it doesn't exist
       }
-
+    
       newValue[factorId][itemId] = inputValue * weight; // Assign the new value to the corresponding factor and item IDs
-
+    
       // Calculate totals
       const totals = {};
       for (const factor in newValue) {
@@ -53,16 +51,17 @@ const NewTable = ({board}) => {
           }
         }
       }
-
-      newValue.totals = newValue;
-
+    
+      // Update the "totals" object separately
+      newValue.totals = { ...totals };
+    
       setValue(newValue); // Update the state with the new value
     }
 
   return (
     <div>
       {decisionMatrixData.map((board) => (
-        <div key={board.board.boar_Id}>
+        <div key={board.board.board_Id}>
           <h2>{board.board.title}</h2>
           <table>
             <thead>
@@ -96,10 +95,8 @@ const NewTable = ({board}) => {
                         onChange={handleChange.bind(this, factor.factorId)}
                       />
                     </td>
-                  ))}
-                  <td key="score">
-                    {value.totals && value.totals[item.item_Id]}
-                  </td>
+                  ))}  
+                  <td key="score">{value.totals && value.totals[item.item_Id]}</td>
                 </tr>
               ))}
             </tbody>
