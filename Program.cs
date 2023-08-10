@@ -65,6 +65,8 @@ namespace Team_Decision_Maker
 
             });
 
+           
+
             app.MapGet("API/board={id}", (int boardId) =>
             {
                 using (var dbContext = new DMDbContext())
@@ -153,6 +155,28 @@ namespace Team_Decision_Maker
 
 
             });
+
+            // Change factor
+
+            app.MapPost("API/factor/update", (int newWeight, int factorId) =>
+            {
+
+
+                using (var dbContext = new DMDbContext())
+                {
+                    FactorModel existingFactor = dbContext.Factors.FirstOrDefault(f => f.FactorId == factorId);
+                    existingFactor.Weight = newWeight;
+
+                    dbContext.Factors.Update(existingFactor);
+                    dbContext.SaveChanges();
+                    return Results.Json(existingFactor);
+                }
+
+
+
+            });
+
+
 
             app.UseCors();
 

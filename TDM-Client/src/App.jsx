@@ -17,6 +17,7 @@ function App() {
   return (
     <>
        <NewTable board={1} />
+       <div>New item</div>
     </>
   )
 }
