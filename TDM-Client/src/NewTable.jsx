@@ -7,6 +7,43 @@ const NewTable = ({board}) => {
     const [decisionMatrixData, setDecisionMatrixData] = useState([]);
     const [value, setValue] = useState([]);
 
+    
+    const findFactorById = (factorId) => decisionMatrixData[0].factors.find(factor => factor.factorId === factorId);
+    
+    
+
+    const ChangeFactorUp = (id, original, data) => {
+      const newVal = original + 1;
+      const factor = findFactorById(id);
+
+      if (factor) {
+        factor.weight = newVal;
+        setDecisionMatrixData([...decisionMatrixData]); // Update the state
+      }
+
+      axios.post('https://localhost:7225/API/factor/update?newWeight=' + newVal + '&factorId=' + id);
+
+    }
+
+    const ChangeFactorDown = (id, original, data) => {
+      const newVal = original - 1;
+      const factor = findFactorById(id);
+
+      if (factor) {
+        factor.weight = newVal;
+        setDecisionMatrixData([...decisionMatrixData]); // Update the state
+      }
+
+      axios.post('https://localhost:7225/API/factor/update?newWeight=' + newVal + '&factorId=' + id);
+
+    }
+
+
+    useEffect(() => {
+      console.log("Matrix changed:")
+     console.log(decisionMatrixData)
+    }, [decisionMatrixData]);
+
     useEffect(() => {
       const fetchData = async () => {
         try {
@@ -77,7 +114,25 @@ const NewTable = ({board}) => {
               <tr>
                 <th>Weight</th>
                 {board.factors.map((factor) => (
-                  <th key={factor.factorId}>{factor.weight}</th>
+                  <>
+                  <th key={factor.factorId}>
+                    {factor.factorId}
+                    <div>
+
+                    <a href="#" onClick={ChangeFactorDown.bind(this, factor.factorId, factor.weight)}>
+                      -
+
+                      </a>
+
+                    </div>
+                    {factor.weight}<div>
+                      <a href="#" onClick={ChangeFactorUp.bind(this, factor.factorId, factor.weight)}>
+                      +
+
+                      </a>
+                      </div></th>
+                    
+                  </>
                 ))}
               </tr>
             </thead>
