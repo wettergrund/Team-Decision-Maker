@@ -6,6 +6,8 @@ const NewTable = ({board}) => {
 
     const [decisionMatrixData, setDecisionMatrixData] = useState([]);
     const [value, setValue] = useState([]);
+    const [input, setInput] = useState("");
+    const [item, setItem] = useState("");
 
     
     const findFactorById = (factorId) => decisionMatrixData[0].factors.find(factor => factor.factorId === factorId);
@@ -36,6 +38,21 @@ const NewTable = ({board}) => {
 
       axios.post('https://localhost:7225/API/factor/update?newWeight=' + newVal + '&factorId=' + id);
 
+      calculateTotals(decisionMatrixData);
+
+    }
+
+    const changeHandler = (e) => {
+      setInput(e.target.value)
+    }
+
+    const submitHandler = (e) => {
+      e.preventDefault()
+      console.log(value)
+      console.log(input)
+      console.log(decisionMatrixData)
+      setItem(input);
+      axios.post('https://localhost:7225/API/item/new?itemTitle=' + input + '&BoardID=' + board);
     }
 
 
@@ -55,13 +72,57 @@ const NewTable = ({board}) => {
       };
   
       fetchData();
-    }, []);
+    }, [item]);
+
+
     useEffect(() => {
-      
+
+      // const newValue = { ...value }; // Create a copy of the current state
+      // const newTotals = calculateTotals(newValue);
+
         console.log(value);
+
+    }, [value]);
+    useEffect(() => {
+      console.log("tot")
+
+        console.log(value);
+
     }, [value]);
 
 
+    // function handleChange(inputfield, e) {
+    //   const factorId = e.target.attributes[2].nodeValue;
+    //   const itemId = e.target.attributes[1].nodeValue;
+    //   const weight = e.target.attributes[3].nodeValue;
+    //   const inputValue = e.target.value;
+    
+    //   const newValue = { ...value }; // Create a copy of the current state
+    
+    //   if (!newValue[factorId]) {
+    //     newValue[factorId] = {}; // Create a new object for the factor ID if it doesn't exist
+    //   }
+    
+    //   newValue[factorId][itemId] = inputValue * weight; // Assign the new value to the corresponding factor and item IDs
+    
+    //   // Calculate totals
+    //   const totals = {};
+    //   for (const factor in newValue) {
+    //     if (factor !== "totals") {
+    //       for (const item in newValue[factor]) {
+    //         if (!totals[item]) {
+    //           totals[item] = 0; // Initialize total for the item ID if it doesn't exist
+    //         }
+    //         totals[item] += newValue[factor][item]; // Accumulate the values for the item ID
+    //       }
+    //     }
+    //   }
+
+    //   // Update the "totals" object separately
+    //   newValue.totals = { ...totals };
+    
+    //   setValue(newValue); // Update the state with the new value
+    // }
     function handleChange(inputfield, e) {
       const factorId = e.target.attributes[2].nodeValue;
       const itemId = e.target.attributes[1].nodeValue;
@@ -76,24 +137,30 @@ const NewTable = ({board}) => {
     
       newValue[factorId][itemId] = inputValue * weight; // Assign the new value to the corresponding factor and item IDs
     
-      // Calculate totals
-      const totals = {};
-      for (const factor in newValue) {
-        if (factor !== "totals") {
-          for (const item in newValue[factor]) {
-            if (!totals[item]) {
-              totals[item] = 0; // Initialize total for the item ID if it doesn't exist
-            }
-            totals[item] += newValue[factor][item]; // Accumulate the values for the item ID
-          }
-        }
-      }
-    
+      const newTotals = calculateTotals(newValue);
       // Update the "totals" object separately
-      newValue.totals = { ...totals };
+      newValue.totals = { ...newTotals };
     
       setValue(newValue); // Update the state with the new value
     }
+
+    function calculateTotals(values) {
+      const totals = {};
+      
+      for (const factor in values) {
+        if (factor !== "totals") {
+          for (const item in values[factor]) {
+            if (!totals[item]) {
+              totals[item] = 0; // Initialize total for the item ID if it doesn't exist
+            }
+            totals[item] += values[factor][item]; // Accumulate the values for the item ID
+          }
+        }
+      }
+      
+      return totals;
+    }
+  
 
   return (
     <div>
@@ -156,6 +223,12 @@ const NewTable = ({board}) => {
               ))}
             </tbody>
           </table>
+          <form onSubmit={submitHandler}>
+
+          <input type="text" onChange={changeHandler} value={input}></input>
+          <input type="submit" value="New item" />
+
+          </form>
         </div>
       ))}
     </div>
