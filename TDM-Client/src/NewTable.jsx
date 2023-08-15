@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import {
+  
+  Route,
+  Routes,
+  useParams
+} from "react-router-dom";
 
 
 const NewTable = ({board}) => {
@@ -8,6 +14,8 @@ const NewTable = ({board}) => {
     const [value, setValue] = useState([]);
     const [input, setInput] = useState("");
     const [item, setItem] = useState("");
+    const [id, setId] = useState()
+    let params = useParams();
 
     
     const findFactorById = (factorId) => decisionMatrixData[0].factors.find(factor => factor.factorId === factorId);
@@ -59,12 +67,16 @@ const NewTable = ({board}) => {
     useEffect(() => {
       console.log("Matrix changed:")
      console.log(decisionMatrixData)
+     console.log("Params")
+     console.log(params)
     }, [decisionMatrixData]);
+
+    
 
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get('https://localhost:7225/API/board={id}?boardId=' + board);
+          const response = await axios.get('https://localhost:7225/API/board={id}?boardId=' + params.id);
           setDecisionMatrixData([response.data]);
         } catch (error) {
           console.log(error);

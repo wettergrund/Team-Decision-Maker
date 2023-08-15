@@ -5,6 +5,12 @@ import axios from 'axios'
 import './App.css'
 import NewTable from './NewTable'
 
+import {
+  
+  Route,
+  Routes
+} from "react-router-dom";
+
 function App() {
   const [users, setUsers] = useState([]);
   
@@ -16,8 +22,22 @@ function App() {
 
   return (
     <>
-       <NewTable board={1} />
-       <div>New item</div>
+
+    <Routes>
+      <Route path={`/:id`} element={
+
+        <NewTable board={1} />
+
+      }/>
+      <Route path={`/`} element={
+        
+        <h1>Main</h1>
+      }/>
+
+       
+    </Routes>
+       
+    
     </>
   )
 }
