@@ -73,7 +73,7 @@ namespace Team_Decision_Maker
                 {
                     var board = dbContext.Boards.FirstOrDefault(id => id.Boar_Id == boardId);
                     var items = dbContext.Items.Where(args => args.BoardId == boardId).ToList();
-                    var factors = dbContext.Factors.Where(args => args.BoardId == boardId).ToList();
+                    var factors = dbContext.Factors.Where(args => args.BoardId == boardId && !args.Hidden).ToList();
 
 
                     var response = new
@@ -175,6 +175,21 @@ namespace Team_Decision_Maker
 
 
             });
+
+            //Remove factor
+            app.MapPost("API/factor/delete", (int factorId) =>
+              {
+                  using (var dbContext = new DMDbContext())
+                  {
+                      FactorModel existingFactor = dbContext.Factors.FirstOrDefault(f => f.FactorId == factorId);
+                      existingFactor.Hidden = true;
+
+                      dbContext.Factors.Update(existingFactor);
+                      dbContext.SaveChanges();
+                      return Results.Json(existingFactor);
+                  }
+
+              });
 
 
 

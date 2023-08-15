@@ -12,6 +12,8 @@ namespace Team_Decision_Maker.Models
 
         public int BoardId { get; set; }
 
+        public bool Hidden { get; set; }
+
         [ForeignKey("BoardId")]
         public BoardModel BoardModel { get; set; } // Navigation property
 
