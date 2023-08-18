@@ -20,7 +20,6 @@ const NewTable = ({board}) => {
 
     
     const findFactorById = (factorId) => decisionMatrixData[0].factors.find(factor => factor.factorId === factorId);
-    const findItemById = (itemId) => decisionMatrixData[0].factors.find(item => item.item_Id === itemId);
     
     
 
@@ -60,25 +59,6 @@ const NewTable = ({board}) => {
       e.preventDefault()
       setItem(input);
       axios.post('https://localhost:7225/API/item/new?itemTitle=' + input + '&BoardID=' + params.id);
-    }
-
-    const deleteItem = (item, e) => {
-      // e.preventDefault()
-      const itemId = item.item_Id
-      const itemIndex = decisionMatrixData[0].items.findIndex(item => item.item_Id === itemId)
-      console.log("Delete: ")
-      console.log(item)
-      console.log(e)
-      // console.log(decisionMatrixData)
-      console.log("index = " + itemIndex)
-
-
-      decisionMatrixData[0].items.splice(itemIndex, 1);
-      setDecisionMatrixData([...decisionMatrixData])
-
-
-
-      axios.delete('https://localhost:7225/API/item/delete?itemId=' + itemId)
     }
 
 
@@ -216,12 +196,6 @@ const NewTable = ({board}) => {
                     </td>
                   ))}  
                   <td key="score">{value.totals && value.totals[item.item_Id]}</td>
-                  <td key="delete">
-                  <a href="#" onClick={deleteItem.bind(this, item)}>
-                      -
-
-                      </a>
-                  </td>
                 </tr>
               ))}
             </tbody>

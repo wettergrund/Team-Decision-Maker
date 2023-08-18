@@ -12,7 +12,6 @@ import {
   Route,
   Routes
 } from "react-router-dom";
-import Nav from './Nav'
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -31,14 +30,11 @@ function App() {
 
   return (
     <>
-    <Nav />
 
     <Routes>
       <Route path={`/:id`} element={
-        <>
-        
+
         <NewTable board={1} />
-        </>
 
       }/>
       <Route path={`/`} element={

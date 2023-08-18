@@ -72,7 +72,7 @@ namespace Team_Decision_Maker
                 using (var dbContext = new DMDbContext())
                 {
                     var board = dbContext.Boards.FirstOrDefault(id => id.Boar_Id == boardId);
-                    var items = dbContext.Items.Where(args => args.BoardId == boardId).ToList();
+                    var items = dbContext.Items.Where(args => args.BoardId == boardId && !args.Hidden).ToList();
                     var factors = dbContext.Factors.Where(args => args.BoardId == boardId && !args.Hidden).ToList();
 
 
@@ -128,6 +128,21 @@ namespace Team_Decision_Maker
 
                 return Results.Json(newItem);
 
+                
+            });
+
+            //Remove item
+            app.MapDelete("API/item/delete", (int itemId) =>
+            {
+                using (var dbContext = new DMDbContext())
+                {
+                    BoardItemModel item = dbContext.Items.FirstOrDefault(f => f.Item_Id == itemId);
+                    item.Hidden = true;
+
+                    dbContext.Items.Update(item);
+                    dbContext.SaveChanges();
+                    return Results.Json(item);
+                }
 
             });
 
@@ -177,7 +192,7 @@ namespace Team_Decision_Maker
             });
 
             //Remove factor
-            app.MapPost("API/factor/delete", (int factorId) =>
+            app.MapDelete("API/factor/delete", (int factorId) =>
               {
                   using (var dbContext = new DMDbContext())
                   {
@@ -190,8 +205,7 @@ namespace Team_Decision_Maker
                   }
 
               });
-
-
+     
 
             app.UseCors();
 

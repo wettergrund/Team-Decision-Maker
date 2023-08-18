@@ -9,6 +9,7 @@ namespace Team_Decision_Maker.Models
         public string Title { get; set; }
 
         public int BoardId { get; set; }
+        public bool Hidden { get; set; }
 
 
         [ForeignKey("BoardId")]
