@@ -31,12 +31,22 @@ function App() {
 
   return (
     <>
-    <Nav />
+    {/* <Nav /> */}
 
     <Routes>
       <Route path={`/:id`} element={
         <>
-        
+        <h1>Decision matrix</h1>
+        <div className="info">
+
+        <p>
+          Add considered options, then vote, (eg. 1-10) for each factor.
+        </p>
+        <p>
+          <b>Weight
+            </b> represent the importance of each factor, which will affect the overall <b>score</b>.
+        </p>
+        </div>
         <NewTable board={1} />
         </>
 

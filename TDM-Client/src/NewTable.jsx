@@ -167,69 +167,95 @@ const NewTable = ({board}) => {
           <table>
             <thead>
               <tr>
-                <th>Items</th>
+                <th> </th>
                 {board.factors.map((factor) => (
-                  <th key={factor.factorId}>{factor.factorName}</th>
+                  <th key={factor.factorId}>
+                    <b>
+
+                    {factor.factorName}
+                    
+                    </b>
+                    </th>
                 ))}
-                <th>Score</th>
+                <th className='score'></th>
+                <th className='delete'></th>
               </tr>
             </thead>
             <thead>
               <tr>
-                <th>Weight</th>
+                <th>
+                  <small>
+                  Weight
+
+                  </small>
+                  </th>
                 {board.factors.map((factor) => (
                   <>
                   <th key={factor.factorId}>
                   
                     <div>
 
-                    <a href="#" onClick={ChangeFactorDown.bind(this, factor.factorId, factor.weight)}>
+                    {/* <a href="#" onClick={ChangeFactorDown.bind(this, factor.factorId, factor.weight)}>
                       -
 
-                      </a>
+                      </a> */}
 
                     </div>
                     {factor.weight}<div>
-                      <a href="#" onClick={ChangeFactorUp.bind(this, factor.factorId, factor.weight)}>
+                      {/* <a href="#" onClick={ChangeFactorUp.bind(this, factor.factorId, factor.weight)}>
                       +
 
-                      </a>
+                      </a> */}
                       </div></th>
+                      
                     
                   </>
                 ))}
+                <th className='score'>Score</th>
+
               </tr>
             </thead>
             <tbody>
               {board.items.map((item) => (
                 <tr key={item.item_Id}>
-                  <td>{item.title}</td>
+                  <td>
+                    <b>
+                    {item.title}
+
+                    </b>
+                    </td>
                   {board.factors.map((factor) => (
-                    <td key={factor.factorId}>
+                        
+                        <td key={factor.factorId} >
                       <input
                         type="text"
                         item={item.item_Id}
                         factor={factor.factorId}
                         weight={factor.weight}
+                        className='vote'
                         onChange={handleChange.bind(this, factor.factorId)}
                       />
                     </td>
                   ))}  
-                  <td key="score">{value.totals && value.totals[item.item_Id]}</td>
+                  <td key="score" className='score'>{value.totals && value.totals[item.item_Id]}</td>
                   <td key="delete">
                   <a href="#" onClick={deleteItem.bind(this, item)}>
-                      -
+                  <div className="del">
+                        -
 
+                      </div>
                       </a>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <h3>Options</h3>
+          <h4>New item</h4>
           <form onSubmit={submitHandler}>
 
-          <input type="text" onChange={changeHandler} value={input}></input>
-          <input type="submit" value="New item" />
+          <input className='New-Item' type="text" onChange={changeHandler} value={input}></input>
+          <input className='Item-Submit' type="submit" value="Add item" />
 
           {/* <ReactSlider /> */}
 
